@@ -46,51 +46,73 @@
 // getStarWarsPerson(5);
 // getStarWarsPerson(10);
 
-const query =
-  "turkey sausage, 2 eggs, 1 cup of sushi rice, and cherry tomatoes";
-const getNutritionInfo = async () => {
+// const query =
+//   "turkey sausage, 2 eggs, 1 cup of sushi rice, and cherry tomatoes";
+// const getNutritionInfo = async () => {
+//   try {
+//     const res = await axios.get("https://api.calorieninjas.com/v1/nutrition", {
+//       params: { query },
+//       headers: { "X-Api-Key": "ZbLSExKUa4wciJcSyH4eUA==cfb0cUtuJTileY18" },
+//     });
+
+//     const data = res.data;
+//     return data;
+//   } catch (error) {
+//     if (error.response) {
+//       // Server responded with a status other than 2xx
+//       console.error("Error: ", error.response.data);
+//     } else {
+//       // Something Else went wrong (Network, etc.)
+//       console.log("Error: ", error.message);
+//     }
+
+//     return null;
+//   }
+// };
+
+// // getNutritionInfo();
+
+// (async () => {
+//   const nutritionData = await getNutritionInfo();
+
+//   if (nutritionData) {
+//     // Example: just log the whole object
+//     console.log(nutritionData);
+
+//     // Example: loop through foods
+//     nutritionData.items.forEach((item) => {
+//       console.log(`${item.name}: ${item.calories} calories`);
+//     });
+
+//     // Example: total calories
+//     const totalCalories = nutritionData.items.reduce(
+//       (sum, item) => sum + item.calories,
+//       0
+//     );
+//     console.log("Total calories:", Math.round(totalCalories));
+//   } else {
+//     console.log("Could not fetch nutrition data.");
+//   }
+// })();
+
+const jokes = document.querySelector("#jokes");
+const button = document.querySelector("button");
+
+const addNewJoke = async () => {
+  const jokeText = await getDadJoke();
+  const newLI = document.createElement("li");
+  newLI.append(jokeText);
+  jokes.append(newLI);
+};
+
+const getDadJoke = async () => {
   try {
-    const res = await axios.get("https://api.calorieninjas.com/v1/nutrition", {
-      params: { query },
-      headers: { "X-Api-Key": "ZbLSExKUa4wciJcSyH4eUA==cfb0cUtuJTileY18" },
-    });
-
-    const data = res.data;
-    return data;
-  } catch (error) {
-    if (error.response) {
-      // Server responded with a status other than 2xx
-      console.error("Error: ", error.response.data);
-    } else {
-      // Something Else went wrong (Network, etc.)
-      console.log("Error: ", error.message);
-    }
-
-    return null;
+    const config = { headers: { Accept: "application/json" } };
+    const res = await axios.get("https://icanhazdadjoke.com/", config);
+    return res.data.joke;
+  } catch (e) {
+    return "NO JOKES AVAILABLE SORRY!";
   }
 };
 
-// getNutritionInfo();
-
-(async () => {
-  const nutritionData = await getNutritionInfo();
-
-  if (nutritionData) {
-    // Example: just log the whole object
-    console.log(nutritionData);
-
-    // Example: loop through foods
-    nutritionData.items.forEach((item) => {
-      console.log(`${item.name}: ${item.calories} calories`);
-    });
-
-    // Example: total calories
-    const totalCalories = nutritionData.items.reduce(
-      (sum, item) => sum + item.calories,
-      0
-    );
-    console.log("Total calories:", Math.round(totalCalories));
-  } else {
-    console.log("Could not fetch nutrition data.");
-  }
-})();
+button.addEventListener("click", addNewJoke);
